@@ -43,6 +43,8 @@ mod diagnostic_scan_test;
 mod emergency_ops_test;
 #[cfg(test)]
 mod issue_1347_test;
+#[cfg(test)]
+mod platform_stats_missing_key_test;
 #[cfg(all(test, feature = "wasm-differential-tests"))]
 mod differential_test;
 #[cfg(test)]
@@ -1743,10 +1745,12 @@ impl CraftNexusContract {
 
     #[inline(always)]
     fn get_total_volume(env: &Env) -> i128 {
-        env.storage()
-            .persistent()
-            .get(&DataKey::TotalVolume)
-            .unwrap_or(0)
+        let key = DataKey::TotalVolume;
+        let value: Option<i128> = env.storage().persistent().get(&key);
+        if value.is_some() {
+            Self::extend_persistent_read(env, &key);
+        }
+        value.unwrap_or(0)
     }
 
     #[inline(always)]
@@ -15064,10 +15068,12 @@ impl CraftNexusContract {
 
     #[inline(always)]
     fn get_total_volume(env: &Env) -> i128 {
-        env.storage()
-            .persistent()
-            .get(&DataKey::TotalVolume)
-            .unwrap_or(0)
+        let key = DataKey::TotalVolume;
+        let value: Option<i128> = env.storage().persistent().get(&key);
+        if value.is_some() {
+            Self::extend_persistent_read(env, &key);
+        }
+        value.unwrap_or(0)
     }
 
     #[inline(always)]
@@ -20428,10 +20434,12 @@ impl CraftNexusContract {
 
     #[inline(always)]
     fn get_total_volume(env: &Env) -> i128 {
-        env.storage()
-            .persistent()
-            .get(&DataKey::TotalVolume)
-            .unwrap_or(0)
+        let key = DataKey::TotalVolume;
+        let value: Option<i128> = env.storage().persistent().get(&key);
+        if value.is_some() {
+            Self::extend_persistent_read(env, &key);
+        }
+        value.unwrap_or(0)
     }
 
     #[inline(always)]
